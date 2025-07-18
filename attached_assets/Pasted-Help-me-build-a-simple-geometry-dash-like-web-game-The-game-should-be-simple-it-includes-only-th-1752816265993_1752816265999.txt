@@ -1,0 +1,42 @@
+Help me build a simple `geometry dash` like web game. The game should be simple: it includes only the following core objects — no ships, portals, or speed multipliers for now.
+
+### Objects:
+
+There are three objective objects.
+- cube: A square cube that represents the user. (assume that it has length of '8' units = 1U) Not rotatable (for now). The cube is initially on the ground and the leftmost bottom point is at (0,0)
+- spike: An isosceles triangle that has the same base width as the cube and the same height as the cube. (it is the base length that is not equal to the other two lengths.) (The collider may be a rectangle of width 2 and height 6 centered at and touching the base of the triangle).
+- block: A square block the same size as the user.
+
+There are also more 'abstract'-ish objects.
+- ground: A basic plane (in the shape of y=0 in the coordinate plane.)
+- 'camera': An object(?) that represents the viewpoint? of the user. The length of the field of perception is 16U (horizontal) and 9U (vertical). Initial field of perception is [-2, 14]U (horizontal) * [-1, 8]U (vertical).
+
+### Parameters (You should let me set them myself hard-coded in the program via testing)
+
+- g: Vertical Gravitational Acceleration. [unit/s^2] (this is usually negative)
+- v0: Initial Horizontal Speed
+- vj: Jump Speed
+- wj [rad/s]: counterclockwise rotation at jump. (unused for now)
+
+### Basic Motions
+
+- Camera Setting: The 'camera' (the viewpoint of the user) moves along horizontally and vertically along the cube.
+- Horizontal Move: The cube must constantly moves at v0 speed toward the right. (+x-axis direction)
+- Jump: If the user is 'clicking' or 'mouseDown' at 'ON_GROUND' (covered later), the cube jumps: gains a vertical speed of vj (and wj rotation - not now) counterclockwise.
+- Gravitational Acceleration: The cube has g Gravitational Accelerations toward y-axis direction.
+
+### Game States
+
+- Dead (some seconds after this, the game is automatically restarted from the initial point.)
+- Paused (When a 'pause' button is clicked - could be implemented later.)
+- Complete (When there is no more object to the 'right' of the user.)
+- Active (default)
+
+### Collisions with cube (first mentioned takes higher precedence.)
+
+- 'CRASH': When any point of the cube collides with any spike. This change game state to 'DEAD'.
+- 'ON_GROUND' (which is true for the cube initially right on the ground): When one or more point of the cube touches the ground or "above" the block. Then the cube does not fall.
+- 'CRASH': When any point of the cube collides any block from the right or above the cube.
+
+I think I'd use Canvas API to do this.
+I know a bit of JS, but have not made any game with it.
