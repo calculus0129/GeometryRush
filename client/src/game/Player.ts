@@ -11,6 +11,7 @@ export class Player {
   rotation: number;
   initialX: number;
   initialY: number;
+  isJumping: boolean;
 
   constructor(x: number, y: number, width: number, height: number, v0: number) {
     this.x = x;
@@ -25,6 +26,7 @@ export class Player {
     // Store initial position for reset
     this.initialX = x;
     this.initialY = y;
+    this.isJumping = false;
 
     console.log("Player created at position:", x, y);
   }
@@ -40,6 +42,7 @@ export class Player {
   reset(x: number | undefined, y: number | undefined) {
     this.x = x || this.initialX;
     this.y = y || this.initialY;
+    this.isJumping = false;
     // this.vx = 0;
     this.vy = 0;
     this.onGround = true;

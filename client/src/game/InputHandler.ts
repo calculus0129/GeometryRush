@@ -1,9 +1,9 @@
 export class InputHandler {
-  isJumping: boolean;
   onJump: null | (() => void);
+  onJumpStop: null | (() => void);
   constructor() {
-    this.isJumping = false;
     this.onJump = null;
+    this.onJumpStop = null;
 
     this.setupEventListeners();
   }
@@ -52,16 +52,10 @@ export class InputHandler {
   }
 
   startJump() {
-    if (!this.isJumping) {
-      this.isJumping = true;
-      if (this.onJump) {
-        this.onJump();
-      }
-      console.log("Jump input detected");
-    }
+    if (this.onJump) this.onJump();
   }
 
   endJump() {
-    this.isJumping = false;
+    if (this.onJumpStop) this.onJumpStop();
   }
 }

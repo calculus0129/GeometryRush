@@ -1,15 +1,26 @@
+import { CollisionType } from "./CollisionDetector";
 import { Bound } from "./types";
 
-export class Block {
+// To be used later.
+class GameObject {
   x: number;
   y: number;
   width: number;
   height: number;
-  constructor(x: number, y: number, width: number = 8, height: number = 8) {
+  colider: CollisionType | undefined;
+
+  constructor(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    colider?: CollisionType
+  ) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.colider = colider;
   }
 
   getBounds(): Bound {
