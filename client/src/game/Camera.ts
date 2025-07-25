@@ -31,7 +31,12 @@ export class Camera {
     this.y = this.targetY;
   }
 
-  worldToScreen(worldX: number, worldY: number, canvasWidth: number, canvasHeight: number) {
+  worldToScreen(
+    worldX: number,
+    worldY: number,
+    canvasWidth: number,
+    canvasHeight: number
+  ) {
     // Convert world coordinates to screen coordinates
     const screenX = ((worldX - this.x) / this.width) * canvasWidth;
     const screenY =
@@ -39,14 +44,24 @@ export class Camera {
     return { x: screenX, y: screenY };
   }
 
-  worldToScreenSize(worldWidth: number, worldHeight: number, canvasWidth: number, canvasHeight: number) {
+  worldToScreenSize(
+    worldWidth: number,
+    worldHeight: number,
+    canvasWidth: number,
+    canvasHeight: number
+  ) {
     // Convert world size to screen size
     const screenWidth = (worldWidth / this.width) * canvasWidth;
     const screenHeight = (worldHeight / this.height) * canvasHeight;
     return { width: screenWidth, height: screenHeight };
   }
 
-  isInView(worldX: number, worldY: number, worldWidth: number, worldHeight: number) {
+  isInView(
+    worldX: number,
+    worldY: number,
+    worldWidth: number,
+    worldHeight: number
+  ) {
     // Check if object is within camera view
     return (
       worldX + worldWidth >= this.x &&

@@ -6,6 +6,7 @@ import { Physics } from "./Physics";
 import { CollisionDetector } from "./CollisionDetector";
 import { GameRenderer } from "./GameRenderer";
 import { InputHandler } from "./InputHandler";
+import { GameState } from "./types";
 
 export class Game {
   canvas: HTMLCanvasElement;
@@ -16,7 +17,7 @@ export class Game {
     vj: number; // Jump speed (units/s)
     wj: number;
   };
-  gameState: string;
+  gameState: GameState;
   restartCountdown: number;
   lastTime: number;
   player: Player;
@@ -32,7 +33,8 @@ export class Game {
   gameStateElement: HTMLElement;
   playerPosElement: HTMLElement;
   onGroundElement: HTMLElement;
-  
+  debugElement: HTMLElement;
+
   gameOverlay: HTMLElement;
   overlayMessage: HTMLElement;
   countdownElement: HTMLElement;
@@ -73,6 +75,8 @@ export class Game {
     this.gameStateElement = document.getElementById("gameState")!;
     this.playerPosElement = document.getElementById("playerPos")!;
     this.onGroundElement = document.getElementById("onGround")!;
+    this.debugElement = document.getElementById("debug")!;
+
     this.gameOverlay = document.getElementById("gameOverlay")!;
     this.overlayMessage = document.getElementById("overlayMessage")!;
     this.countdownElement = document.getElementById("countdown")!;
@@ -124,6 +128,7 @@ export class Game {
   restart() {
     console.log("Game restarted");
     this.player.reset(0, 0);
+    this.camera.follow(this.player);
     this.gameState = "ready";
     this.restartCountdown = 0;
     this.gameOverlay.classList.add("hidden");
@@ -172,8 +177,15 @@ export class Game {
 
   update(deltaTime: number) {
     if (this.gameState === "active") {
-      // Update physics
-      this.physics.updatePlayer(this.player, deltaTime);
+      // Check spike collisions
+      for (const spike of this.spikes) {
+        if (
+          this.collisionDetector.checkPlayerSpikeCollision(this.player, spike)
+        ) {
+          this.crash();
+          return;
+        }
+      }
 
       // Check ground collision
       if (this.player.y <= 0) {
@@ -192,7 +204,7 @@ export class Game {
           // Player landed on block or crashed into it
           const collision = this.collisionDetector.getPlayerBlockCollisionType(
             this.player,
-            block,
+            block
           );
           if (collision === "top") {
             this.player.y = block.y + block.height;
@@ -205,15 +217,8 @@ export class Game {
         }
       }
 
-      // Check spike collisions
-      for (const spike of this.spikes) {
-        if (
-          this.collisionDetector.checkPlayerSpikeCollision(this.player, spike)
-        ) {
-          this.crash();
-          return;
-        }
-      }
+      // Update physics
+      this.physics.updatePlayer(this.player, deltaTime);
 
       // Update camera to follow player
       this.camera.follow(this.player);
@@ -276,9 +281,11 @@ export class Game {
     this.renderer.renderFinishLine(this.levelEnd);
   }
 
+  // Just update textboxes that pops up on the top of the screen.
   updateUI() {
     this.gameStateElement.textContent = this.gameState;
     this.playerPosElement.textContent = this.player.x.toFixed(1);
     this.onGroundElement.textContent = `${this.player.onGround}`;
+    this.debugElement.textContent = `wee`;
   }
 }

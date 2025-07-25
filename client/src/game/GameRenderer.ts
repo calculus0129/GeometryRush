@@ -23,7 +23,7 @@ export class GameRenderer {
       0,
       0,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     ).y;
 
     this.ctx.strokeStyle = "#4a4a4a";
@@ -45,13 +45,13 @@ export class GameRenderer {
       player.x,
       player.y,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
     const screenSize = this.camera.worldToScreenSize(
       player.width,
       player.height,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
 
     // Draw player as blue cube
@@ -63,13 +63,13 @@ export class GameRenderer {
       screenPos.x,
       screenPos.y - screenSize.height,
       screenSize.width,
-      screenSize.height,
+      screenSize.height
     );
     this.ctx.strokeRect(
       screenPos.x,
       screenPos.y - screenSize.height,
       screenSize.width,
-      screenSize.height,
+      screenSize.height
     );
   }
 
@@ -82,13 +82,13 @@ export class GameRenderer {
       spike.x,
       spike.y,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
     const screenSize = this.camera.worldToScreenSize(
       spike.width,
       spike.height,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
 
     // Draw spike as red triangle
@@ -101,7 +101,7 @@ export class GameRenderer {
     this.ctx.lineTo(screenPos.x + screenSize.width, screenPos.y); // Bottom right
     this.ctx.lineTo(
       screenPos.x + screenSize.width / 2,
-      screenPos.y - screenSize.height,
+      screenPos.y - screenSize.height
     ); // Top center
     this.ctx.closePath();
     this.ctx.fill();
@@ -113,13 +113,13 @@ export class GameRenderer {
         spike.collisionX,
         spike.collisionY,
         this.canvas.width,
-        this.canvas.height,
+        this.canvas.height
       );
       const collisionSize = this.camera.worldToScreenSize(
         spike.collisionWidth,
         spike.collisionHeight,
         this.canvas.width,
-        this.canvas.height,
+        this.canvas.height
       );
 
       this.ctx.strokeStyle = "#ff0000";
@@ -128,7 +128,7 @@ export class GameRenderer {
         collisionPos.x,
         collisionPos.y - collisionSize.height,
         collisionSize.width,
-        collisionSize.height,
+        collisionSize.height
       );
     }
   }
@@ -142,13 +142,13 @@ export class GameRenderer {
       block.x,
       block.y,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
     const screenSize = this.camera.worldToScreenSize(
       block.width,
       block.height,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
 
     // Draw block as gray cube
@@ -160,13 +160,13 @@ export class GameRenderer {
       screenPos.x,
       screenPos.y - screenSize.height,
       screenSize.width,
-      screenSize.height,
+      screenSize.height
     );
     this.ctx.strokeRect(
       screenPos.x,
       screenPos.y - screenSize.height,
       screenSize.width,
-      screenSize.height,
+      screenSize.height
     );
   }
 
@@ -179,13 +179,13 @@ export class GameRenderer {
       x,
       0,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
     const topPos = this.camera.worldToScreen(
       x,
       20,
       this.canvas.width,
-      this.canvas.height,
+      this.canvas.height
     );
 
     // Draw finish line as checkered pattern
