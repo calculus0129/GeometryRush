@@ -1,4 +1,6 @@
 export class InputHandler {
+  isJumping: boolean;
+  onJump: null | (()=>void);
   constructor() {
     this.isJumping = false;
     this.onJump = null;

@@ -1,5 +1,13 @@
+import { Block } from "./Block";
+import { Camera } from "./Camera";
+import { Player } from "./Player";
+import { Spike } from "./Spike";
+
 export class GameRenderer {
-  constructor(ctx, camera) {
+  ctx: CanvasRenderingContext2D;
+  camera: Camera;
+  canvas: any;
+  constructor(ctx: CanvasRenderingContext2D, camera: Camera) {
     this.ctx = ctx;
     this.camera = camera;
     this.canvas = ctx.canvas;
@@ -26,7 +34,7 @@ export class GameRenderer {
     this.ctx.stroke();
   }
 
-  renderPlayer(player) {
+  renderPlayer(player: Player) {
     if (
       !this.camera.isInView(player.x, player.y, player.width, player.height)
     ) {
@@ -65,7 +73,7 @@ export class GameRenderer {
     );
   }
 
-  renderSpike(spike) {
+  renderSpike(spike: Spike) {
     if (!this.camera.isInView(spike.x, spike.y, spike.width, spike.height)) {
       return;
     }
@@ -100,7 +108,7 @@ export class GameRenderer {
     this.ctx.stroke();
 
     // Draw collision box for debugging (optional)
-    if (false) {
+    if (true) {
       const collisionPos = this.camera.worldToScreen(
         spike.collisionX,
         spike.collisionY,
@@ -125,7 +133,7 @@ export class GameRenderer {
     }
   }
 
-  renderBlock(block) {
+  renderBlock(block: Block) {
     if (!this.camera.isInView(block.x, block.y, block.width, block.height)) {
       return;
     }
@@ -162,7 +170,7 @@ export class GameRenderer {
     );
   }
 
-  renderFinishLine(x) {
+  renderFinishLine(x: number) {
     if (!this.camera.isInView(x, 0, 1, 20)) {
       return;
     }

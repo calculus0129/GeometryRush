@@ -1,16 +1,45 @@
-import { Player } from "./Player.js";
-import { Spike } from "./Spike.js";
-import { Block } from "./Block.js";
-import { Camera } from "./Camera.js";
-import { Physics } from "./Physics.js";
-import { CollisionDetector } from "./CollisionDetector.js";
-import { GameRenderer } from "./GameRenderer.js";
-import { InputHandler } from "./InputHandler.js";
+import { Player } from "./Player";
+import { Spike } from "./Spike";
+import { Block } from "./Block";
+import { Camera } from "./Camera";
+import { Physics } from "./Physics";
+import { CollisionDetector } from "./CollisionDetector";
+import { GameRenderer } from "./GameRenderer";
+import { InputHandler } from "./InputHandler";
 
 export class Game {
-  constructor(canvas) {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  params: {
+    g: number; // Gravity (units/s²) - negative for downward
+    v0: number; // Initial horizontal speed (units/s)
+    vj: number; // Jump speed (units/s)
+    wj: number;
+  };
+  gameState: string;
+  restartCountdown: number;
+  lastTime: number;
+  player: Player;
+  spikes: Spike[];
+  blocks: Block[];
+  camera: Camera;
+  physics: Physics;
+  collisionDetector: CollisionDetector;
+  renderer: GameRenderer;
+  inputHandler: InputHandler;
+
+  // UI Element?
+  gameStateElement: HTMLElement;
+  playerPosElement: HTMLElement;
+  onGroundElement: HTMLElement;
+  
+  gameOverlay: HTMLElement;
+  overlayMessage: HTMLElement;
+  countdownElement: HTMLElement;
+  levelEnd: number = 0;
+  constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
+    this.ctx = canvas.getContext("2d")!; // The writer is not actually sure if this is not null.
 
     // Game parameters (configurable)
     this.params = {
@@ -41,12 +70,12 @@ export class Game {
     this.createLevel();
 
     // UI elements
-    this.gameStateElement = document.getElementById("gameState");
-    this.playerPosElement = document.getElementById("playerPos");
-    this.onGroundElement = document.getElementById("onGround");
-    this.gameOverlay = document.getElementById("gameOverlay");
-    this.overlayMessage = document.getElementById("overlayMessage");
-    this.countdownElement = document.getElementById("countdown");
+    this.gameStateElement = document.getElementById("gameState")!;
+    this.playerPosElement = document.getElementById("playerPos")!;
+    this.onGroundElement = document.getElementById("onGround")!;
+    this.gameOverlay = document.getElementById("gameOverlay")!;
+    this.overlayMessage = document.getElementById("overlayMessage")!;
+    this.countdownElement = document.getElementById("countdown")!;
 
     // Bind methods
     this.gameLoop = this.gameLoop.bind(this);
@@ -141,7 +170,7 @@ export class Game {
     requestAnimationFrame(this.gameLoop);
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     if (this.gameState === "active") {
       // Update physics
       this.physics.updatePlayer(this.player, deltaTime);
@@ -201,7 +230,7 @@ export class Game {
     if (this.gameState === "dead" && this.restartCountdown > 0) {
       this.restartCountdown -= deltaTime;
       const seconds = Math.ceil(this.restartCountdown);
-      this.countdownElement.textContent = seconds;
+      this.countdownElement.textContent = seconds.toString();
 
       if (this.restartCountdown <= 0) {
         this.restart();
@@ -250,6 +279,6 @@ export class Game {
   updateUI() {
     this.gameStateElement.textContent = this.gameState;
     this.playerPosElement.textContent = this.player.x.toFixed(1);
-    this.onGroundElement.textContent = this.player.onGround;
+    this.onGroundElement.textContent = `${this.player.onGround}`;
   }
 }

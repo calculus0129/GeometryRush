@@ -1,5 +1,18 @@
+import { Bound } from "./types";
+
 export class Player {
-  constructor(x, y, width, height, v0) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  vx: number;
+  vy: number;
+  onGround: boolean;
+  rotation: number;
+  initialX: number;
+  initialY: number;
+
+  constructor(x: number, y: number, width: number, height: number, v0: number) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -16,7 +29,7 @@ export class Player {
     console.log("Player created at position:", x, y);
   }
 
-  jump(jumpVelocity) {
+  jump(jumpVelocity: number) {
     // if (this.onGround) {
     this.vy = jumpVelocity;
     this.onGround = false;
@@ -24,7 +37,7 @@ export class Player {
     // }
   }
 
-  reset(x, y) {
+  reset(x: number | undefined, y: number | undefined) {
     this.x = x || this.initialX;
     this.y = y || this.initialY;
     // this.vx = 0;
@@ -34,7 +47,7 @@ export class Player {
     console.log("Player reset to position:", this.x, this.y);
   }
 
-  getBounds() {
+  getBounds(): Bound {
     return {
       left: this.x,
       right: this.x + this.width,

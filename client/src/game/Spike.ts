@@ -1,5 +1,16 @@
+import { Bound } from "./types";
+
 export class Spike {
-  constructor(x, y, width, height) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  
+  collisionWidth: number;
+  collisionHeight: number;
+  collisionX: number;
+  collisionY: number;
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -12,7 +23,7 @@ export class Spike {
     this.collisionY = y;
   }
   
-  getBounds() {
+  getBounds(): Bound {
     return {
       left: this.x,
       right: this.x + this.width,
@@ -21,7 +32,7 @@ export class Spike {
     };
   }
   
-  getCollisionBounds() {
+  getCollisionBounds(): Bound {
     return {
       left: this.collisionX,
       right: this.collisionX + this.collisionWidth,

@@ -1,5 +1,14 @@
+import { Player } from "./Player";
+
 export class Camera {
-  constructor(x, y, width, height) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  targetX: number;
+  targetY: number;
+
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -10,7 +19,7 @@ export class Camera {
     console.log("Camera initialized:", { x, y, width, height });
   }
 
-  follow(player) {
+  follow(player: Player) {
     // Camera follows player horizontally and vertically
     this.targetX = player.x - 2 * 8; // Keep player slightly left of center
     this.targetY = player.y - 1 * 8; // Keep player slightly below center
@@ -22,7 +31,7 @@ export class Camera {
     this.y = this.targetY;
   }
 
-  worldToScreen(worldX, worldY, canvasWidth, canvasHeight) {
+  worldToScreen(worldX: number, worldY: number, canvasWidth: number, canvasHeight: number) {
     // Convert world coordinates to screen coordinates
     const screenX = ((worldX - this.x) / this.width) * canvasWidth;
     const screenY =
@@ -30,14 +39,14 @@ export class Camera {
     return { x: screenX, y: screenY };
   }
 
-  worldToScreenSize(worldWidth, worldHeight, canvasWidth, canvasHeight) {
+  worldToScreenSize(worldWidth: number, worldHeight: number, canvasWidth: number, canvasHeight: number) {
     // Convert world size to screen size
     const screenWidth = (worldWidth / this.width) * canvasWidth;
     const screenHeight = (worldHeight / this.height) * canvasHeight;
     return { width: screenWidth, height: screenHeight };
   }
 
-  isInView(worldX, worldY, worldWidth, worldHeight) {
+  isInView(worldX: number, worldY: number, worldWidth: number, worldHeight: number) {
     // Check if object is within camera view
     return (
       worldX + worldWidth >= this.x &&

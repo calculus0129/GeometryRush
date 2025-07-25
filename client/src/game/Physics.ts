@@ -1,9 +1,12 @@
+import { Player } from "./Player";
+
 export class Physics {
-  constructor(params) {
+  params: Record<string, number>;
+  constructor(params: Record<string, number>) {
     this.params = params;
   }
 
-  updatePlayer(player, deltaTime) {
+  updatePlayer(player: Player, deltaTime: number) {
     if (player.onGround) {
       player.vy = 0;
     } else {

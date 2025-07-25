@@ -1,19 +1,24 @@
+import { Block } from "./Block";
+import { Player } from "./Player";
+import { Spike } from "./Spike";
+import { Bound } from "./types";
+
 export class CollisionDetector {
-  checkPlayerSpikeCollision(player, spike) {
+  checkPlayerSpikeCollision(player: Player, spike: Spike) {
     const playerBounds = player.getBounds();
     const spikeBounds = spike.getCollisionBounds();
     
     return this.checkAABBCollision(playerBounds, spikeBounds);
   }
   
-  checkPlayerBlockCollision(player, block) {
+  checkPlayerBlockCollision(player: Player, block: Block) {
     const playerBounds = player.getBounds();
     const blockBounds = block.getBounds();
     
     return this.checkAABBCollision(playerBounds, blockBounds);
   }
   
-  isPlayerOnBlock(player, block) {
+  isPlayerOnBlock(player: Player, block: Block) {
     const playerBounds = player.getBounds();
     const blockBounds = block.getBounds();
     
@@ -26,7 +31,7 @@ export class CollisionDetector {
     );
   }
   
-  getPlayerBlockCollisionType(player, block) {
+  getPlayerBlockCollisionType(player: Player, block: Block) {
     const playerBounds = player.getBounds();
     const blockBounds = block.getBounds();
     
@@ -46,7 +51,7 @@ export class CollisionDetector {
     }
   }
   
-  checkAABBCollision(bounds1, bounds2) {
+  checkAABBCollision(bounds1: Bound, bounds2: Bound) {
     return (
       bounds1.left < bounds2.right &&
       bounds1.right > bounds2.left &&

@@ -1,12 +1,18 @@
+import { Bound } from "./types";
+
 export class Block {
-  constructor(x, y, width, height) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
   }
   
-  getBounds() {
+  getBounds(): Bound {
     return {
       left: this.x,
       right: this.x + this.width,
