@@ -6,7 +6,7 @@ import { Spike } from "./Spike";
 export class GameRenderer {
   ctx: CanvasRenderingContext2D;
   camera: Camera;
-  canvas: any;
+  canvas: HTMLCanvasElement;
   constructor(ctx: CanvasRenderingContext2D, camera: Camera) {
     this.ctx = ctx;
     this.camera = camera;
