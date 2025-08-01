@@ -5,30 +5,30 @@ export class Camera {
   y: number;
   width: number;
   height: number;
+  targetX: number;
+  targetY: number;
 
   constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.targetX = x;
+    this.targetY = y;
 
     console.log("Camera initialized:", { x, y, width, height });
   }
 
-  follow(player: Player, yClamp: number = 0) {
-    // Camera follows player horizontally
-    const targetX = player.x - 2 * 8; // Keep player slightly left of center
-    this.x = targetX;
+  follow(player: Player) {
+    // Camera follows player horizontally and vertically
+    this.targetX = player.x - 2 * 8; // Keep player slightly left of center
+    this.targetY = player.y - 1 * 8; // Keep player slightly below center
 
-    // And is clampped vertically
-    const centerY = this.y + this.height / 2;
-    if (Math.abs(centerY - player.y) > yClamp) {
-      this.y =
-        player.y + yClamp * Math.sign(centerY - player.y) - this.height / 2;
-    }
     // Smooth camera movement (optional)
     // this.x += (this.targetX - this.x) * 0.5;
     // this.y += (this.targetY - this.y) * 0.5;
+    this.x = this.targetX;
+    this.y = this.targetY;
   }
 
   worldToScreen(

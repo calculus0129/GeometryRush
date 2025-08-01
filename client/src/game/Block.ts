@@ -5,7 +5,7 @@ export class Block {
   y: number;
   width: number;
   height: number;
-  constructor(x: number, y: number, width: number = 8, height: number = 8) {
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
