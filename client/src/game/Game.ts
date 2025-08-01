@@ -119,6 +119,11 @@ export class Game {
     this.muteButton.addEventListener('click', () => {
       const isMuted = this.audioManager.toggleMute();
       this.muteButton.textContent = isMuted ? '🔇 Sound OFF' : '🔊 Sound ON';
+      
+      // If unmuting and game is active, resume background music
+      if (!isMuted && this.gameState === GameState.ACTIVE) {
+        this.audioManager.resumeBackgroundMusic();
+      }
     });
 
     console.log("Game initialized");
