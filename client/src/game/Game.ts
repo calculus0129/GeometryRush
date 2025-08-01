@@ -181,8 +181,7 @@ export class Game {
     this.restartCountdown = 0;
     this.gameOverlay.classList.add("hidden");
     
-    // Stop any playing music when restarting
-    this.audioManager.stopBackgroundMusic();
+    // Music will be handled by the next game start
     
     this.updateUI();
   }
