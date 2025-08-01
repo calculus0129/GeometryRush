@@ -3,6 +3,9 @@ export class AudioManager {
   hitSound: HTMLAudioElement | null = null;
   successSound: HTMLAudioElement | null = null;
   isMuted: boolean = false;
+  originalBackgroundVolume: number = 0.3;
+  originalHitVolume: number = 0.5;
+  originalSuccessVolume: number = 0.6;
   
   constructor() {
     // Initialize audio elements
@@ -16,14 +19,14 @@ export class AudioManager {
       // Load background music (supports mp3, wav, midi)
       this.backgroundMusic = new Audio('/sounds/background.mp3');
       this.backgroundMusic.loop = true;
-      this.backgroundMusic.volume = 0.3;
+      this.backgroundMusic.volume = this.originalBackgroundVolume;
       
       // Load sound effects
       this.hitSound = new Audio('/sounds/hit.mp3');
-      this.hitSound.volume = 0.5;
+      this.hitSound.volume = this.originalHitVolume;
       
       this.successSound = new Audio('/sounds/success.mp3');
-      this.successSound.volume = 0.6;
+      this.successSound.volume = this.originalSuccessVolume;
       
       console.log('Audio files loaded successfully');
     } catch (error) {
@@ -32,8 +35,9 @@ export class AudioManager {
   }
   
   startBackgroundMusic(): void {
-    if (this.backgroundMusic && !this.isMuted) {
+    if (this.backgroundMusic) {
       this.backgroundMusic.currentTime = 0;
+      this.backgroundMusic.volume = this.isMuted ? 0 : this.originalBackgroundVolume;
       this.backgroundMusic.play().catch(error => {
         console.log('Background music play prevented:', error);
       });
@@ -69,10 +73,10 @@ export class AudioManager {
   }
   
   playCrashSound(): void {
-    if (this.hitSound && !this.isMuted) {
+    if (this.hitSound) {
       // Clone the sound to allow overlapping playback
       const soundClone = this.hitSound.cloneNode() as HTMLAudioElement;
-      soundClone.volume = this.hitSound.volume;
+      soundClone.volume = this.isMuted ? 0 : this.originalHitVolume;
       soundClone.play().catch(error => {
         console.log('Crash sound play prevented:', error);
       });
@@ -81,8 +85,9 @@ export class AudioManager {
   }
   
   playSuccessSound(): void {
-    if (this.successSound && !this.isMuted) {
+    if (this.successSound) {
       this.successSound.currentTime = 0;
+      this.successSound.volume = this.isMuted ? 0 : this.originalSuccessVolume;
       this.successSound.play().catch(error => {
         console.log('Success sound play prevented:', error);
       });
@@ -94,14 +99,34 @@ export class AudioManager {
     this.isMuted = !this.isMuted;
     
     if (this.isMuted) {
-      this.stopBackgroundMusic();
+      // Mute by setting volume to 0, but keep playing
+      if (this.backgroundMusic) {
+        this.backgroundMusic.volume = 0;
+      }
+      if (this.hitSound) {
+        this.hitSound.volume = 0;
+      }
+      if (this.successSound) {
+        this.successSound.volume = 0;
+      }
+    } else {
+      // Unmute by restoring original volumes
+      if (this.backgroundMusic) {
+        this.backgroundMusic.volume = this.originalBackgroundVolume;
+      }
+      if (this.hitSound) {
+        this.hitSound.volume = this.originalHitVolume;
+      }
+      if (this.successSound) {
+        this.successSound.volume = this.originalSuccessVolume;
+      }
     }
     
     console.log(`Audio ${this.isMuted ? 'muted' : 'unmuted'}`);
     return this.isMuted;
   }
   
-  // Method to restart background music when unmuting
+  // Method to restart background music when unmuting (now just ensures it's playing)
   resumeBackgroundMusic(): void {
     if (this.backgroundMusic && !this.isMuted && this.backgroundMusic.paused) {
       this.backgroundMusic.play().catch(error => {
