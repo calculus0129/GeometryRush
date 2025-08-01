@@ -101,6 +101,16 @@ export class AudioManager {
     return this.isMuted;
   }
   
+  // Method to restart background music when unmuting
+  resumeBackgroundMusic(): void {
+    if (this.backgroundMusic && !this.isMuted && this.backgroundMusic.paused) {
+      this.backgroundMusic.play().catch(error => {
+        console.log('Background music resume prevented:', error);
+      });
+      console.log('Background music resumed');
+    }
+  }
+  
   setMuted(muted: boolean): void {
     this.isMuted = muted;
     
