@@ -1,32 +1,43 @@
+import { Bound } from "./types";
+
 export class Spike {
-  constructor(x, y, width, height) {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+
+  collisionWidth: number;
+  collisionHeight: number;
+  collisionX: number;
+  collisionY: number;
+  constructor(x: number, y: number, width: number = 8, height: number = 8) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    
+
     // Collision box (2x6 units centered at base)
     this.collisionWidth = 2;
     this.collisionHeight = 6;
     this.collisionX = x + (width - this.collisionWidth) / 2;
     this.collisionY = y;
   }
-  
-  getBounds() {
+
+  getBounds(): Bound {
     return {
       left: this.x,
       right: this.x + this.width,
       top: this.y + this.height,
-      bottom: this.y
+      bottom: this.y,
     };
   }
-  
-  getCollisionBounds() {
+
+  getCollisionBounds(): Bound {
     return {
       left: this.collisionX,
       right: this.collisionX + this.collisionWidth,
       top: this.collisionY + this.collisionHeight,
-      bottom: this.collisionY
+      bottom: this.collisionY,
     };
   }
 }
