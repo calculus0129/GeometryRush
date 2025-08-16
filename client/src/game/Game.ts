@@ -116,10 +116,10 @@ export class Game {
     };
 
     // Set up mute button
-    this.muteButton.addEventListener('click', () => {
+    this.muteButton.addEventListener("click", () => {
       const isMuted = this.audioManager.toggleMute();
-      this.muteButton.textContent = isMuted ? '🔇 Sound OFF' : '🔊 Sound ON';
-      
+      this.muteButton.textContent = isMuted ? "🔇 Sound OFF" : "🔊 Sound ON";
+
       // If unmuting and game is active, resume background music
       if (!isMuted && this.gameState === GameState.ACTIVE) {
         this.audioManager.resumeBackgroundMusic();
@@ -180,9 +180,10 @@ export class Game {
     this.gameState = GameState.READY;
     this.restartCountdown = 0;
     this.gameOverlay.classList.add("hidden");
-    
+    this.audioManager.stopBackgroundMusic();
+
     // Music will be handled by the next game start
-    
+
     this.updateUI();
   }
 
@@ -265,11 +266,11 @@ export class Game {
     this.restartCountdown = 2;
     this.overlayMessage.textContent = "Game Over";
     this.gameOverlay.classList.remove("hidden");
-    
+
     // Stop background music and play crash sound
     this.audioManager.stopBackgroundMusic();
     this.audioManager.playCrashSound();
-    
+
     this.updateUI();
   }
 
@@ -278,11 +279,11 @@ export class Game {
     this.gameState = GameState.COMPLETE;
     this.overlayMessage.textContent = "Level Complete!";
     this.gameOverlay.classList.remove("hidden");
-    
+
     // Fade out background music and play success sound
     this.audioManager.fadeOutBackgroundMusic(1500);
     this.audioManager.playSuccessSound();
-    
+
     this.updateUI();
   }
 
