@@ -6,6 +6,7 @@ import { Physics } from "./Physics";
 import { CollisionDetector } from "./CollisionDetector";
 import { GameRenderer } from "./GameRenderer";
 import { InputHandler } from "./InputHandler";
+import { AudioManager } from "./AudioManager";
 import { GameState, ParamType } from "./types";
 
 export class Game {
@@ -23,6 +24,7 @@ export class Game {
   collisionDetector: CollisionDetector;
   renderer: GameRenderer;
   inputHandler: InputHandler;
+  audioManager: AudioManager;
 
   // UI Element?
   gameStateElement: HTMLElement;
@@ -33,6 +35,7 @@ export class Game {
   gameOverlay: HTMLElement;
   overlayMessage: HTMLElement;
   countdownElement: HTMLElement;
+  muteButton: HTMLElement;
   levelEnd: number = 0;
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -62,6 +65,7 @@ export class Game {
     this.collisionDetector = new CollisionDetector();
     this.renderer = new GameRenderer(this.ctx, this.camera);
     this.inputHandler = new InputHandler();
+    this.audioManager = new AudioManager();
 
     // Create level
     this.createLevel();
@@ -75,6 +79,7 @@ export class Game {
     this.gameOverlay = document.getElementById("gameOverlay")!;
     this.overlayMessage = document.getElementById("overlayMessage")!;
     this.countdownElement = document.getElementById("countdown")!;
+    this.muteButton = document.getElementById("muteButton")!;
 
     const handleInput = () => {
       switch (this.gameState) {
@@ -98,6 +103,7 @@ export class Game {
       switch (this.gameState) {
         case GameState.READY:
           this.gameState = GameState.ACTIVE;
+          this.audioManager.startBackgroundMusic();
           this.updateUI();
           break;
         case GameState.ACTIVE:
@@ -108,6 +114,17 @@ export class Game {
           this.restart();
       }
     };
+
+    // Set up mute button
+    this.muteButton.addEventListener("click", () => {
+      const isMuted = this.audioManager.toggleMute();
+      this.muteButton.textContent = isMuted ? "🔇 Sound OFF" : "🔊 Sound ON";
+
+      // If unmuting and game is active, resume background music
+      if (!isMuted && this.gameState === GameState.ACTIVE) {
+        this.audioManager.resumeBackgroundMusic();
+      }
+    });
 
     console.log("Game initialized");
   }
@@ -163,6 +180,10 @@ export class Game {
     this.gameState = GameState.READY;
     this.restartCountdown = 0;
     this.gameOverlay.classList.add("hidden");
+    this.audioManager.stopBackgroundMusic();
+
+    // Music will be handled by the next game start
+
     this.updateUI();
   }
 
@@ -245,6 +266,11 @@ export class Game {
     this.restartCountdown = 2;
     this.overlayMessage.textContent = "Game Over";
     this.gameOverlay.classList.remove("hidden");
+
+    // Stop background music and play crash sound
+    this.audioManager.stopBackgroundMusic();
+    this.audioManager.playCrashSound();
+
     this.updateUI();
   }
 
@@ -253,6 +279,11 @@ export class Game {
     this.gameState = GameState.COMPLETE;
     this.overlayMessage.textContent = "Level Complete!";
     this.gameOverlay.classList.remove("hidden");
+
+    // Fade out background music and play success sound
+    this.audioManager.fadeOutBackgroundMusic(1500);
+    this.audioManager.playSuccessSound();
+
     this.updateUI();
   }
 
